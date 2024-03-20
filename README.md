@@ -17,10 +17,10 @@
 
 1. Find Successor:
     
-    - To delete a node with two children, we need to find the successor node, which is the node with the ***smallest value*** in the ***right subtree*** of the node to be deleted. We can do this by finding the leftmost node in the right subtree.
+    - To delete a node with two children, we need to find the successor node, which is the node with the *smallest value* in the *right subtree* of the node to be deleted. We can do this by finding the leftmost node in the right subtree.
 
 2. Replace Node's Value:
     - Once the successor node's value is found, we replace the value of the node to be deleted with the successor's value. This ensures that the binary search tree property is maintained.
 
 3. Delete Successor Node:
-    - After replacing the node's value, we need to delete the successor node from its original position in the tree. We do this by recursively calling the delete_recursive method to remove the successor node from its new location in the right subtree.
+    - After replacing the node's value, we need to delete the successor node from its original position in the tree. We do this by recursively calling the ```delete_recursive``` method to remove the successor node from its new location in the right subtree.

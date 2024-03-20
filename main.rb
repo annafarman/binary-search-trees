@@ -27,6 +27,7 @@ class Tree
 
     def find(value)
         #return the node with the given value
+        @root = find_recursive(@root, value)
     end
 
     def level_order(block)
@@ -119,6 +120,18 @@ class Tree
         current = current.left_child until current.left_child.nil?
         current.value
     end
+
+    def find_recursive(node, value)
+        return nil if node.nil?
+        return node if node.value == value
+
+        if value < node.value
+            return find_recursive(node.left_child, value)
+        elsif value > node.value
+            return find_recursive(node.right_child, value)
+        end
+    end
+        
 end
 
 # mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
@@ -132,7 +145,9 @@ mTree.insert(7)
 mTree.pretty_print
 
 mTree.delete(58)
-mTree.delete(7)
 mTree.pretty_print
+
+p mTree.find(23)
+p mTree.find(57)
 mTree.balanced?
 
