@@ -18,22 +18,45 @@ class Tree
     end 
 
     def insert(value)
-        @root = insert_recursive(@root, value)
+        insert_recursive(@root, value)
     end
 
     def delete(value)
-        @root = delete_recursive(@root, value)
+        delete_recursive(@root, value)
     end
 
     def find(value)
         #return the node with the given value
-        @root = find_recursive(@root, value)
+        find_recursive(@root, value)
     end
 
-    def level_order(block)
-        #traverse the tree in breadth-first level order and yield each node to the provided block
-        #return an array of values if no block is given
+    def level_order_iteration(&block)
+        # puts "Inside level order iteration." #debugging statement
+        return [] if @root.nil?
+        result = []
+        queue = [@root]
+        # p queue
 
+        while !queue.empty?
+            node = queue.shift
+            # puts "Processing node: #{node.value}" #debugging statement
+            block_given? ? yield(node) : result << node.value
+
+            queue << node.left_child if node.left_child
+            queue << node.right_child if node.right_child
+        end
+        result
+    end
+
+    def level_order_recursion(&block)
+        # puts "Inside level recursion." #debugging statement
+        return [] if @root.nil?
+        result = []
+        queue = [@root]
+        # p queue
+
+        level_order_recursive(queue, result, &block)
+        result
     end
 
     def inorder
@@ -131,6 +154,18 @@ class Tree
             return find_recursive(node.right_child, value)
         end
     end
+
+    def level_order_recursive(queue, result, &block)
+        return if queue.empty?
+        node = queue.shift
+        # puts "Processing node: #{node.value}" #debugging statement
+        block_given? ? yield(node) : result << node.value
+
+        queue << node.left_child if node.left_child
+        queue << node.right_child if node.right_child
+
+        level_order_recursive(queue, result, &block)
+    end
         
 end
 
@@ -147,7 +182,14 @@ mTree.pretty_print
 mTree.delete(58)
 mTree.pretty_print
 
-p mTree.find(23)
-p mTree.find(57)
+p "Find 23: #{mTree.find(23)}"
+p "Find 57: #{mTree.find(57)}"
+
+p "Iteration: #{mTree.level_order_iteration}"
+# mTree.level_order_iteration{|node| puts node.value}
+
+p "Recursion: #{mTree.level_order_recursion}"
+# mTree.level_order_recursion{|node| puts node.value}
+
 mTree.balanced?
 
