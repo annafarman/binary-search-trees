@@ -14,13 +14,49 @@ class Tree
     def initialize(arr)
         sorted_unique_arr = arr.uniq.sort
         @root = build_tree(sorted_unique_arr, 0, sorted_unique_arr.length-1)
+        # p @root
     end 
 
     def insert(value)
-        
+        @root = insert_recursive(@root, value)
     end
 
     def delete(value)
+
+    end
+
+    def find(value)
+        #return the node with the given value
+    end
+
+    def level_order(block)
+        #traverse the tree in breadth-first level order and yield each node to the provided block
+        #return an array of values if no block is given
+
+    end
+
+    def inorder
+    end
+
+    def preorder
+    end
+
+    def postorder
+    end
+
+    def height(node)
+        
+    end
+
+    def depth(node)
+        
+    end
+
+    def balanced?
+        
+    end
+
+    def rebalance
 
     end
 
@@ -43,8 +79,26 @@ class Tree
 
         node
     end
+
+    def insert_recursive(node, value)
+        return Node.new(value) if node.nil?
+
+        if value < node.value
+            node.left_child = insert_recursive(node.left_child, value)
+        elsif value > node.value
+            node.right_child = insert_recursive(node.right_child, value)
+        end
+        node
+    end
 end
 
-mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+# mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+# mTree.pretty_print
+
+mTree = Tree.new(Array.new(15) { rand(1..100) })
 mTree.pretty_print
+
+mTree.insert(35)
+mTree.pretty_print
+mTree.balanced?
 
