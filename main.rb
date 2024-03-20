@@ -22,7 +22,7 @@ class Tree
     end
 
     def delete(value)
-
+        @root = delete_recursive(@root, value)
     end
 
     def find(value)
@@ -90,6 +90,35 @@ class Tree
         end
         node
     end
+
+    def delete_recursive(node, value)
+        return node if node.nil?
+
+        if value < node.value
+            node.left_child = delete_recursive(node.left_child, value)
+        elsif value > node.value
+            node.right_child = delete_recursive(node.right_child, value)
+        else
+            #Case 1: Node has no children or only one child
+            if node.left_child.nil?
+                return node.right_child
+            elsif node.right_child.nil?
+                return node.left_child
+            end
+
+            #Case 2: Node has 2 children
+            successor_value = find_min_value(node.right_child)
+            node.value = successor_value
+            node.right_child = delete_recursive(node.right_child, successor_value)
+        end
+        node
+    end
+
+    def find_min_value(node)
+        current = node
+        current = current.left_child until current.left_child.nil?
+        current.value
+    end
 end
 
 # mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
@@ -98,7 +127,12 @@ end
 mTree = Tree.new(Array.new(15) { rand(1..100) })
 mTree.pretty_print
 
-mTree.insert(35)
+mTree.insert(58)
+mTree.insert(7)
+mTree.pretty_print
+
+mTree.delete(58)
+mTree.delete(7)
 mTree.pretty_print
 mTree.balanced?
 
