@@ -14,15 +14,18 @@ class Tree
     def initialize(arr)
         sorted_unique_arr = arr.uniq.sort
         @root = build_tree(sorted_unique_arr, 0, sorted_unique_arr.length-1)
-        # p @root
     end 
 
     def insert(value)
-        insert_recursive(@root, value)
+        @root = insert_recursive(@root, value)
+        # p @root
+        # @root
     end
 
     def delete(value)
-        delete_recursive(@root, value)
+        @root = delete_recursive(@root, value)
+        # p @root
+        # @root
     end
 
     def find(value)
@@ -87,12 +90,19 @@ class Tree
         result
     end
 
-    def height(node)
-        
+    def height(node = @root)
+        return -1 if node.nil?
+
+        left_height = height(node.left_child)
+        right_height = height(node.right_child)
+
+        [left_height, right_height].max + 1
     end
 
     def depth(node)
-        
+        return 0 if node.nil? || node == @root
+
+        1+ depth(find_parent_recursive(@root, node))
     end
 
     def balanced?
@@ -186,12 +196,19 @@ class Tree
 
         level_order_recursive(queue, result, &block)
     end
+
+    def find_parent_recursive(root, node)
+        return nil if root.nil?
+        return root if root.left_child == node || root.right_child == node
+
+        left_parent = find_parent_recursive(root.left_child, node)
+        right_parent = find_parent_recursive(root.right_child, node)
+
+        left_parent.nil? ? right_parent : left_parent
+    end
 end
 
-# mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-# mTree.pretty_print
-
-mTree = Tree.new([59, 32, 79, 21, 50, 69, 97, 7, 30, 43, 52, 85, 99])
+mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 mTree.pretty_print
 
 # mTree = Tree.new(Array.new(15) { rand(1..100) })
@@ -199,27 +216,33 @@ mTree.pretty_print
 
 mTree.insert(58)
 mTree.insert(7)
+mTree.insert(88)
 mTree.pretty_print
 
-mTree.delete(58)
-mTree.pretty_print
+# mTree.delete(58)
+# mTree.pretty_print
 
-p "Find 23: #{mTree.find(23)}"
-p "Find 57: #{mTree.find(57)}"
+# p "Find 23: #{mTree.find(23)}"
+# p "Find 57: #{mTree.find(57)}"
 
-p "Iteration: #{mTree.level_order_iteration}"
+# p "Iteration: #{mTree.level_order_iteration}"
 # mTree.level_order_iteration{|node| puts node.value}
 
-p "Recursion: #{mTree.level_order_recursion}"
+# p "Recursion: #{mTree.level_order_recursion}"
 # mTree.level_order_recursion{|node| puts node.value}
 
 
-p "In-order traversal: #{mTree.inorder_traversal}"
+# p "In-order traversal: #{mTree.inorder_traversal}"
 # mTree.inorder_traversal{|node| puts node.value}
 
-p "Pre-order traversal: #{mTree.preorder_traversal}"
+# p "Pre-order traversal: #{mTree.preorder_traversal}"
 # mTree.preorder_traversal{|node| puts node.value}
 
-p "Post-order traversal: #{mTree.postorder_traversal}"
+# p "Post-order traversal: #{mTree.postorder_traversal}"
 # mTree.postorder_traversal{|node| puts node.value}
+
+p "Height is #{mTree.height}."
+p "The depth of value 67: #{mTree.depth(mTree.find(67))}."
+p "The depth of value 23: #{mTree.depth(mTree.find(23))}."
+
 mTree.balanced?
