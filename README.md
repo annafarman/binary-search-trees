@@ -36,4 +36,34 @@ In breadth-first level traversal, we visit all the nodes at each level of the tr
     - Yield the node to the provided block (if given), or add its value to an array (if no block is given)
     - Enqueue the left and right child nodes (if they exist)
 
+### In-order Traversal
+In-order traversal is a type of depth-first traversal, which uses Stack. This is different from breadth-first traversal order, which uses queue.
+
+Time complexity: O(n)
+
+In in-order traversal, the nodes are visited in the following order:
+1. Traverse left recursively
+2. Visit current node
+3. Traverse right recursively
+
+### Pre-order Traversal
+Also, a type of depth-first traversal.
+
+Time complexity: O(n)
+
+In pre-order traversal, the nodes are visited in the following order:
+1. Visit current node
+2. Traverse left recursively
+3. Traverse right recursively
+
+### Post-order Traversal
+Also, a type of depth-first traversal.
+
+Time complexity: O(n)
+
+In post-order traversal, the nodes are visited in the following order:
+1. Traverse left recursively
+2. Traverse right recursively
+3. Visit current node
+
 

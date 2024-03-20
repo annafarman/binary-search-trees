@@ -59,13 +59,32 @@ class Tree
         result
     end
 
-    def inorder
+    def inorder_traversal(node = @root, &block)
+        return [] if node.nil?
+        result = []
+        result += inorder_traversal(node.left_child, &block)
+        block_given? ? yield(node) : result << node.value
+        result += inorder_traversal(node.right_child, &block)
+        result
     end
 
-    def preorder
+
+    def preorder_traversal(node = @root, &block)
+        return [] if node.nil?
+        result = []
+        block_given? ? yield(node) : result << node.value
+        result += inorder_traversal(node.left_child, &block)
+        result += inorder_traversal(node.right_child, &block)
+        result
     end
 
-    def postorder
+    def postorder_traversal(node = @root, &block)
+        return [] if node.nil?
+        result = []
+        result += inorder_traversal(node.left_child, &block)
+        result += inorder_traversal(node.right_child, &block)
+        block_given? ? yield(node) : result << node.value
+        result
     end
 
     def height(node)
@@ -91,6 +110,7 @@ class Tree
     end
 
     private
+
     def build_tree(arr, start_idx, end_idx)
         #The build_tree method should return the level-0 root node
         return nil if start_idx > end_idx
@@ -166,14 +186,16 @@ class Tree
 
         level_order_recursive(queue, result, &block)
     end
-        
 end
 
 # mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 # mTree.pretty_print
 
-mTree = Tree.new(Array.new(15) { rand(1..100) })
+mTree = Tree.new([59, 32, 79, 21, 50, 69, 97, 7, 30, 43, 52, 85, 99])
 mTree.pretty_print
+
+# mTree = Tree.new(Array.new(15) { rand(1..100) })
+# mTree.pretty_print
 
 mTree.insert(58)
 mTree.insert(7)
@@ -191,5 +213,13 @@ p "Iteration: #{mTree.level_order_iteration}"
 p "Recursion: #{mTree.level_order_recursion}"
 # mTree.level_order_recursion{|node| puts node.value}
 
-mTree.balanced?
 
+p "In-order traversal: #{mTree.inorder_traversal}"
+# mTree.inorder_traversal{|node| puts node.value}
+
+p "Pre-order traversal: #{mTree.preorder_traversal}"
+# mTree.preorder_traversal{|node| puts node.value}
+
+p "Post-order traversal: #{mTree.postorder_traversal}"
+# mTree.postorder_traversal{|node| puts node.value}
+mTree.balanced?
