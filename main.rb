@@ -105,12 +105,20 @@ class Tree
         1+ depth(find_parent_recursive(@root, node))
     end
 
-    def balanced?
-        
+    def balanced?(node = @root)
+        return true if node.nil?
+
+         left_height = height(node.left_child)
+         right_height = height(node.right_child)
+
+         return false if (left_height-right_height).abs > 1
+
+         balanced?(node.left_child) && balanced?(node.right_child) 
     end
 
     def rebalance
-
+        arr = level_order_recursion().sort
+        @root = build_tree(arr, 0, arr.length-1)
     end
 
     def pretty_print(node = @root, prefix = '', is_left = true)
@@ -208,41 +216,51 @@ class Tree
     end
 end
 
-mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-mTree.pretty_print
-
-# mTree = Tree.new(Array.new(15) { rand(1..100) })
+# mTree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 # mTree.pretty_print
 
-mTree.insert(58)
-mTree.insert(7)
-mTree.insert(88)
+
+mTree = Tree.new(Array.new(15) { rand(1..100) })
 mTree.pretty_print
 
-# mTree.delete(58)
-# mTree.pretty_print
+7.times do 
+    mTree.insert(rand(100..500))
+end
 
-# p "Find 23: #{mTree.find(23)}"
-# p "Find 57: #{mTree.find(57)}"
+mTree.pretty_print
 
-# p "Iteration: #{mTree.level_order_iteration}"
+mTree.delete(58)
+
+x = rand(1..100) 
+y = rand(1..100) 
+p "Find #{x}: #{mTree.find(x)}"
+p "Find #{y}: #{mTree.find(y)}"
+
+p "Iteration: #{mTree.level_order_iteration}"
 # mTree.level_order_iteration{|node| puts node.value}
-
-# p "Recursion: #{mTree.level_order_recursion}"
+p "Recursion: #{mTree.level_order_recursion}"
 # mTree.level_order_recursion{|node| puts node.value}
 
 
-# p "In-order traversal: #{mTree.inorder_traversal}"
+puts "In-order traversal: #{mTree.inorder_traversal}"
 # mTree.inorder_traversal{|node| puts node.value}
-
-# p "Pre-order traversal: #{mTree.preorder_traversal}"
+puts "Pre-order traversal: #{mTree.preorder_traversal}"
 # mTree.preorder_traversal{|node| puts node.value}
-
-# p "Post-order traversal: #{mTree.postorder_traversal}"
+puts "Post-order traversal: #{mTree.postorder_traversal}"
 # mTree.postorder_traversal{|node| puts node.value}
+puts "Height is #{mTree.height}."
+puts "Is this tree balanced? #{mTree.balanced?}"
 
-p "Height is #{mTree.height}."
-p "The depth of value 67: #{mTree.depth(mTree.find(67))}."
-p "The depth of value 23: #{mTree.depth(mTree.find(23))}."
+mTree.rebalance
+mTree.pretty_print
+puts "Is this tree balanced? #{mTree.balanced?}"
 
-mTree.balanced?
+puts "In-order traversal: #{mTree.inorder_traversal}"
+puts "Pre-order traversal: #{mTree.preorder_traversal}"
+puts "Post-order traversal: #{mTree.postorder_traversal}"
+
+puts "Height is #{mTree.height}."
+puts "The depth of value x: #{mTree.depth(mTree.find(x))}."
+puts "The depth of value y: #{mTree.depth(mTree.find(y))}."
+
+
